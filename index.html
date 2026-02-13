@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grade 1 Science - Daily and Seasonal Changes</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Comic Sans MS', Arial, sans-serif; background: linear-gradient(135deg, #f5e6d3 0%, #e8d4b8 100%); padding: 20px; min-height: 100vh; }
+.container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); overflow: hidden; }
+.header { background: linear-gradient(135deg, #ff8c42 0%, #ff6b35 100%); color: white; padding: 30px; text-align: center; border-bottom: 5px solid #d45a2e; }
+.header h1 { font-size: 2.5em; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); margin-bottom: 10px; }
+.header p { font-size: 1.3em; opacity: 0.95; }
+.unit-selector { background: #8b5a3c; padding: 20px; text-align: center; border-bottom: 3px solid #6d4228; }
+.unit-selector h2 { color: white; margin-bottom: 15px; font-size: 1.5em; }
+.unit-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; max-width: 900px; margin: 0 auto; }
+.unit-btn { background: #ff8c42; color: white; border: none; padding: 15px; border-radius: 15px; font-size: 1em; cursor: pointer; transition: all 0.3s; font-weight: bold; box-shadow: 0 3px 6px rgba(0,0,0,0.2); }
+.unit-btn:hover { background: #ff6b35; transform: translateY(-2px); box-shadow: 0 5px 10px rgba(0,0,0,0.3); }
+.unit-btn.active { background: #4caf50; box-shadow: 0 0 15px rgba(76, 175, 80, 0.5); }
+.unit-content { display: none; }
+.unit-content.active { display: block; }
+.unit-badge { display: inline-block; background: #8b5a3c; color: white; padding: 10px 25px; border-radius: 25px; margin: 20px 0; font-size: 1.1em; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
+.nav-buttons { background: #f8f8f8; padding: 15px; text-align: center; border-bottom: 3px solid #ddd; }
+.nav-buttons button { background: #ff8c42; color: white; border: none; padding: 12px 30px; margin: 5px; border-radius: 25px; font-size: 1.1em; cursor: pointer; transition: all 0.3s; font-weight: bold; }
+.nav-buttons button:hover { background: #ff6b35; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+.nav-buttons button.active { background: #8b5a3c; }
+.content-section { display: none; padding: 40px; animation: fadeIn 0.5s; }
+.content-section.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.read-text { cursor: pointer; display: inline-flex; align-items: center; gap: 8px; padding: 8px 15px; background: #fff4e6; border: 2px solid #ff8c42; border-radius: 20px; margin: 10px 0; transition: all 0.3s; }
+.read-text:hover { background: #ff8c42; color: white; }
+.read-text::before { content: "🔊"; font-size: 1.2em; }
+.content-box { background: linear-gradient(135deg, #fff9f0 0%, #ffe8d1 100%); border-left: 6px solid #ff8c42; padding: 25px; margin: 20px 0; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+.content-box h2 { color: #8b5a3c; margin-bottom: 15px; font-size: 1.8em; }
+.content-box p { line-height: 1.8; font-size: 1.2em; color: #333; margin-bottom: 15px; }
+.example-card { background: white; border: 3px solid #ff8c42; border-radius: 15px; padding: 20px; margin: 15px 0; box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
+.example-card h3 { color: #ff6b35; margin-bottom: 10px; font-size: 1.4em; }
+.example-card p { line-height: 1.6; font-size: 1.1em; margin-bottom: 10px; }
+.example-card ul { list-style: none; padding-left: 0; }
+.example-card li { padding: 8px 0; padding-left: 30px; position: relative; font-size: 1.1em; }
+.example-card li::before { content: "🏗️"; position: absolute; left: 0; }
+.activity-container { background: #f0f8ff; border: 4px solid #4a90e2; border-radius: 15px; padding: 30px; margin: 20px 0; }
+.activity-container h2 { color: #2c5aa0; text-align: center; margin-bottom: 25px; font-size: 2em; }
+.drag-drop-area { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px; }
+.items-box { background: white; border: 3px solid #8b5a3c; border-radius: 15px; padding: 20px; min-height: 300px; }
+.items-box h3 { color: #8b5a3c; margin-bottom: 15px; text-align: center; }
+.drop-zones { display: flex; flex-direction: column; gap: 15px; }
+.drop-zone { background: white; border: 3px dashed #4a90e2; border-radius: 15px; padding: 20px; min-height: 120px; transition: all 0.3s; }
+.drop-zone h4 { color: #2c5aa0; margin-bottom: 10px; font-size: 1.2em; }
+.drop-zone.drag-over { background: #e3f2fd; border-color: #ff8c42; transform: scale(1.02); }
+.draggable-item { background: linear-gradient(135deg, #ff8c42 0%, #ff6b35 100%); color: white; padding: 15px; margin: 10px 0; border-radius: 10px; cursor: move; font-weight: bold; text-align: center; box-shadow: 0 3px 6px rgba(0,0,0,0.2); transition: all 0.3s; }
+.draggable-item:hover { transform: translateY(-3px); box-shadow: 0 5px 10px rgba(0,0,0,0.3); }
+.draggable-item.dragging { opacity: 0.5; }
+.check-button { background: #4caf50; color: white; border: none; padding: 15px 40px; font-size: 1.3em; border-radius: 30px; cursor: pointer; display: block; margin: 20px auto; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.2); transition: all 0.3s; }
+.check-button:hover { background: #45a049; transform: translateY(-2px); }
+.reset-button { background: #f44336; color: white; border: none; padding: 12px 30px; font-size: 1.1em; border-radius: 25px; cursor: pointer; display: block; margin: 10px auto; font-weight: bold; transition: all 0.3s; }
+.reset-button:hover { background: #da190b; }
+.feedback { text-align: center; font-size: 1.5em; font-weight: bold; margin: 20px 0; padding: 15px; border-radius: 10px; display: none; }
+.feedback.correct { background: #d4edda; color: #155724; border: 3px solid #28a745; display: block; }
+.feedback.incorrect { background: #f8d7da; color: #721c24; border: 3px solid #dc3545; display: block; }
+.quiz-container { background: #fff4e6; border: 4px solid #ff8c42; border-radius: 15px; padding: 30px; margin: 20px 0; }
+.quiz-container h2 { color: #8b5a3c; text-align: center; margin-bottom: 30px; font-size: 2em; }
+.quiz-question { background: white; border: 3px solid #8b5a3c; border-radius: 15px; padding: 25px; margin: 20px 0; }
+.quiz-question h3 { color: #ff6b35; margin-bottom: 20px; font-size: 1.4em; }
+.quiz-options { display: flex; flex-direction: column; gap: 12px; }
+.quiz-option { background: #f8f8f8; border: 3px solid #ddd; border-radius: 10px; padding: 15px; cursor: pointer; transition: all 0.3s; font-size: 1.1em; }
+.quiz-option:hover { background: #ffe8d1; border-color: #ff8c42; }
+.quiz-option.selected { background: #ff8c42; color: white; border-color: #ff6b35; }
+.quiz-option.correct { background: #d4edda; border-color: #28a745; color: #155724; }
+.quiz-option.incorrect { background: #f8d7da; border-color: #dc3545; color: #721c24; }
+.submit-quiz-button { background: #4caf50; color: white; border: none; padding: 15px 40px; font-size: 1.3em; border-radius: 30px; cursor: pointer; display: block; margin: 30px auto; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.2); transition: all 0.3s; }
+.submit-quiz-button:hover { background: #45a049; transform: translateY(-2px); }
+.quiz-score { text-align: center; font-size: 2em; font-weight: bold; color: #8b5a3c; margin: 20px 0; padding: 20px; background: #fff9f0; border-radius: 15px; display: none; }
+@media (max-width: 768px) { .drag-drop-area { grid-template-columns: 1fr; } .header h1 { font-size: 1.8em; } .content-section { padding: 20px; } .unit-buttons { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🌞 Daily and Seasonal Changes 🍂</h1>
+<p>Grade 1 Science - Ontario Curriculum</p>
+</div>
+
+<div class="unit-selector">
+<h2>Choose a Unit to Explore!</h2>
+<div class="unit-buttons">
+<button class="unit-btn active" onclick="showUnit(1)">E1.1: Outdoor Activities</button>
+<button class="unit-btn" onclick="showUnit(2)">E1.2: Impact on Society</button>
+<button class="unit-btn" onclick="showUnit(3)">E2.1: Earth & Sun</button>
+<button class="unit-btn" onclick="showUnit(4)">E2.2: Cycles</button>
+<button class="unit-btn" onclick="showUnit(5)">E2.3: Light & Heat</button>
+<button class="unit-btn" onclick="showUnit(6)">E2.4: Four Seasons</button>
+<button class="unit-btn" onclick="showUnit(7)">E2.5: Living Things</button>
+<button class="unit-btn" onclick="showUnit(8)">E2.6: Human Response</button>
+</div>
+</div>
+
+<div id="units-container"></div>
+</div>
+
+<script>
+const unitsData = {
+  1: {
+    title: "E1.1: Outdoor Activities Through the Seasons",
+    learn: `
+      <div class="content-box">
+        <h2>How Do Daily and Seasonal Changes Affect What We Do Outside?</h2>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>Every day and every season is different! The weather changes, and this affects what we can do outside. Let's learn how people enjoy outdoor activities all year long!</p>
+      </div>
+      <div class="example-card">
+        <h3>🌞 Summer Activities</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>In summer, it's hot and sunny! We can:</p>
+        <ul><li>Go swimming at the beach or pool</li><li>Play in the park and have picnics</li><li>Ride bikes with friends</li><li>Play sports like soccer and baseball</li><li>Go camping with our families</li></ul>
+      </div>
+      <div class="example-card">
+        <h3>🍂 Fall Activities</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>In fall, it gets cooler and leaves change color. We can:</p>
+        <ul><li>Jump in piles of colorful leaves</li><li>Go to pumpkin patches</li><li>Pick apples at orchards</li><li>Take nature walks to see the colors</li><li>Play outside wearing light jackets</li></ul>
+      </div>
+      <div class="example-card">
+        <h3>❄️ Winter Activities</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>In winter, it's cold and we might have snow! We can:</p>
+        <ul><li>Build snowmen and make snow angels</li><li>Go sledding down hills</li><li>Ice skating on frozen ponds</li><li>Have snowball fights</li><li>Go skiing or snowboarding</li></ul>
+      </div>
+      <div class="example-card">
+        <h3>🌸 Spring Activities</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>In spring, it gets warmer and flowers bloom! We can:</p>
+        <ul><li>Plant flowers and vegetables in gardens</li><li>Fly kites on windy days</li><li>Look for baby animals</li><li>Splash in puddles after rain</li><li>Go for bike rides as the weather warms up</li></ul>
+      </div>
+      <div class="content-box">
+        <h2>🏗️ Innovations That Help Us All Year!</h2>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>People have created special things to help us enjoy outdoor activities in any season!</p>
+      </div>
+      <div class="example-card">
+        <h3>Smart Clothing</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <ul><li>Winter coats keep us warm in the cold</li><li>Rain jackets keep us dry when it rains</li><li>Sunscreen protects our skin in summer</li><li>Snow boots help us walk in deep snow</li></ul>
+      </div>
+      <div class="example-card">
+        <h3>Indoor Spaces</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <ul><li>Indoor pools let us swim in winter</li><li>Ice rinks with roofs let us skate in summer</li><li>Gyms let us play sports any time</li><li>Greenhouses grow plants all year</li></ul>
+      </div>
+    `,
+    activity: {
+      title: "Match Activities to Seasons!",
+      instruction: "Drag each activity to the season when we usually do it!",
+      items: [
+        {text: "Swimming at the Beach", answer: "summer"},
+        {text: "Building a Snowman", answer: "winter"},
+        {text: "Jumping in Leaf Piles", answer: "fall"},
+        {text: "Planting Flowers", answer: "spring"},
+        {text: "Playing Baseball", answer: "summer"},
+        {text: "Ice Skating", answer: "winter"},
+        {text: "Picking Apples", answer: "fall"},
+        {text: "Flying a Kite", answer: "spring"}
+      ],
+      zones: [
+        {id: "summer", label: "☀️ Summer"},
+        {id: "fall", label: "🍂 Fall"},
+        {id: "winter", label: "❄️ Winter"},
+        {id: "spring", label: "🌸 Spring"}
+      ]
+    },
+    quiz: [
+      {q: "What season is best for swimming at the beach?", opts: ["Winter", "Summer", "Fall", "Spring"], correct: 1},
+      {q: "What helps us stay warm when we play outside in winter?", opts: ["Sunscreen", "Winter coats", "Shorts", "Flip flops"], correct: 1},
+      {q: "In which season do leaves change color and fall from trees?", opts: ["Summer", "Winter", "Fall", "Spring"], correct: 2},
+      {q: "What innovation lets us swim even in winter?", opts: ["Outdoor pools", "Indoor pools", "Lakes", "Rain jackets"], correct: 1},
+      {q: "What spring activity involves planting seeds and watching them grow?", opts: ["Ice skating", "Building snowmen", "Gardening", "Swimming"], correct: 2}
+    ]
+  },
+  2: {
+    title: "E1.2: Impact on Society and the Environment",
+    learn: `
+      <div class="content-box">
+        <h2>How Do Seasons Affect Our World?</h2>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>Daily and seasonal changes don't just affect us - they affect our whole community, the environment, and all living things! Let's explore how!</p>
+      </div>
+      <div class="example-card">
+        <h3>🏘️ Impact on Society</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>Our communities change with the seasons:</p>
+        <ul><li>Schools close on snow days in winter</li><li>Farmers harvest crops in fall</li><li>Ice cream trucks come out in summer</li><li>We celebrate different holidays each season</li><li>Construction work happens more in warmer months</li></ul>
+      </div>
+      <div class="example-card">
+        <h3>🌍 Impact on the Environment</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>The environment changes every season:</p>
+        <ul><li>Rivers and lakes can freeze in winter</li><li>Rain helps plants grow in spring</li><li>Forests are green and full of life in summer</li><li>Leaves fall and create compost in autumn</li><li>Snow covers the ground and protects seeds</li></ul>
+      </div>
+      <div class="example-card">
+        <h3>🦋 Impact on Living Things</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>Animals and plants respond to seasons:</p>
+        <ul><li>Birds fly south for the winter</li><li>Bears hibernate in caves during cold months</li><li>Flowers bloom in spring and summer</li><li>Squirrels gather nuts for winter</li><li>Butterflies come out when it's warm</li></ul>
+      </div>
+      <div class="content-box">
+        <h2>🌡️ Daily Changes Matter Too!</h2>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>Even day to night affects our world! During the day, the sun warms us and plants make food. At night, it gets cooler and many animals come out to hunt or play!</p>
+      </div>
+    `,
+    activity: {
+      title: "Match the Impact!",
+      instruction: "Drag each example to show what it impacts most!",
+      items: [
+        {text: "School Snow Days", answer: "society"},
+        {text: "Lakes Freezing", answer: "environment"},
+        {text: "Birds Migrating South", answer: "living"},
+        {text: "Farmers Harvesting", answer: "society"},
+        {text: "Snow Covering Ground", answer: "environment"},
+        {text: "Flowers Blooming", answer: "living"},
+        {text: "Ice Cream Trucks", answer: "society"},
+        {text: "Bears Hibernating", answer: "living"}
+      ],
+      zones: [
+        {id: "society", label: "🏘️ Society"},
+        {id: "environment", label: "🌍 Environment"},
+        {id: "living", label: "🦋 Living Things"}
+      ]
+    },
+    quiz: [
+      {q: "Why might school close on a winter day?", opts: ["It's too hot", "There's too much snow", "It's raining", "It's windy"], correct: 1},
+      {q: "What do birds do when winter comes?", opts: ["Build nests", "Fly south where it's warmer", "Sleep all day", "Change colors"], correct: 1},
+      {q: "When do farmers usually harvest their crops?", opts: ["Winter", "Spring", "Fall", "Never"], correct: 2},
+      {q: "What happens to lakes in very cold winter weather?", opts: ["They dry up", "They freeze", "They get warmer", "They disappear"], correct: 1},
+      {q: "What do bears do during winter?", opts: ["Play in the snow", "Hibernate in caves", "Swim in lakes", "Climb trees"], correct: 1}
+    ]
+  },
+  3: {
+    title: "E2.1: Earth's Relationship to the Sun",
+    learn: `
+      <div class="content-box">
+        <h2>Earth and the Sun</h2>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>The Earth and Sun have a special relationship! The Earth moves around the Sun, and this movement creates day and night, and the four seasons. Let's learn how!</p>
+      </div>
+      <div class="example-card">
+        <h3>☀️ Day and Night</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>The Earth spins like a top! When our part of Earth faces the Sun, we have daytime and it's bright and warm. When our part spins away from the Sun, we have nighttime and it gets dark and cooler.</p>
+      </div>
+      <div class="example-card">
+        <h3>🔄 The Earth Spins</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>It takes one full day (24 hours) for Earth to spin around once. This is why we have day and night every single day!</p>
+        <ul><li>Morning: Sun rises in the east</li><li>Noon: Sun is high in the sky</li><li>Evening: Sun sets in the west</li><li>Night: We see the moon and stars</li></ul>
+      </div>
+      <div class="example-card">
+        <h3>🌍 The Earth Travels Around the Sun</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>The Earth also travels in a big circle around the Sun! This journey takes one whole year. As Earth travels, different parts of Earth get more or less sunlight. This creates our four seasons!</p>
+      </div>
+      <div class="content-box">
+        <h2>Why Seasons Happen</h2>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>Earth is tilted like a spinning top that's leaning! Because of this tilt, different parts of Earth point toward the Sun at different times of the year. When our part points toward the Sun, we get summer. When we point away, we get winter!</p>
+      </div>
+    `,
+    activity: {
+      title: "Day or Night?",
+      instruction: "Drag each activity to when it usually happens!",
+      items: [
+        {text: "Eating Breakfast", answer: "day"},
+        {text: "Going to Bed", answer: "night"},
+        {text: "Playing at Recess", answer: "day"},
+        {text: "Looking at Stars", answer: "night"},
+        {text: "Sun is Bright", answer: "day"},
+        {text: "Moon Shining", answer: "night"},
+        {text: "Going to School", answer: "day"},
+        {text: "Reading Bedtime Stories", answer: "night"}
+      ],
+      zones: [
+        {id: "day", label: "☀️ Daytime"},
+        {id: "night", label: "🌙 Nighttime"}
+      ]
+    },
+    quiz: [
+      {q: "Why do we have day and night?", opts: ["The Sun goes to sleep", "Earth spins around", "Clouds cover the Sun", "The moon blocks the Sun"], correct: 1},
+      {q: "How long does it take Earth to spin around once?", opts: ["One hour", "One day (24 hours)", "One week", "One year"], correct: 1},
+      {q: "What does the Sun give us?", opts: ["Only light", "Only heat", "Both light and heat", "Water"], correct: 2},
+      {q: "Where does the Sun rise?", opts: ["In the west", "In the east", "In the north", "In the south"], correct: 1},
+      {q: "How long does it take Earth to travel around the Sun?", opts: ["One day", "One month", "One year", "One week"], correct: 2}
+    ]
+  },
+  4: {
+    title: "E2.2: Understanding Cycles",
+    learn: `
+      <div class="content-box">
+        <h2>What is a Cycle?</h2>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>A cycle is something that happens over and over again in the same order! Like riding a bicycle in circles, cycles repeat themselves. We can see cycles in nature every day!</p>
+      </div>
+      <div class="example-card">
+        <h3>🔄 The Daily Cycle</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>Every day follows the same pattern:</p>
+        <ul><li>Morning - The sun rises and it gets light</li><li>Afternoon - The sun is high and bright</li><li>Evening - The sun sets and it gets dark</li><li>Night - We see stars and the moon</li><li>Then morning comes again!</li></ul>
+      </div>
+      <div class="example-card">
+        <h3>🍂 The Seasonal Cycle</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>The four seasons repeat every year in order:</p>
+        <ul><li>Winter - Cold and snowy</li><li>Spring - Warm and flowers bloom</li><li>Summer - Hot and sunny</li><li>Fall - Cool and leaves change colors</li><li>Then winter comes again!</li></ul>
+      </div>
+      <div class="content-box">
+        <h2>Other Cycles We See</h2>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>There are many cycles in nature and in our lives!</p>
+      </div>
+      <div class="example-card">
+        <h3>🌙 Moon Cycle</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>The moon changes shape in the sky! It goes from full moon, to half moon, to no moon we can see, then back to full moon again. This cycle takes about one month.</p>
+      </div>
+      <div class="example-card">
+        <h3>📅 Weekly Cycle</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>The days of the week repeat in a cycle: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday - then Monday again!</p>
+      </div>
+    `,
+    activity: {
+      title: "Put the Cycles in Order!",
+      instruction: "Drag items to show what comes next in each cycle!",
+      items: [
+        {text: "Morning", answer: "daily"},
+        {text: "Night", answer: "daily"},
+        {text: "Winter", answer: "seasons"},
+        {text: "Summer", answer: "seasons"},
+        {text: "Monday", answer: "week"},
+        {text: "Sunday", answer: "week"},
+        {text: "Spring", answer: "seasons"},
+        {text: "Afternoon", answer: "daily"}
+      ],
+      zones: [
+        {id: "daily", label: "☀️ Daily Cycle"},
+        {id: "seasons", label: "🍂 Seasonal Cycle"},
+        {id: "week", label: "📅 Weekly Cycle"}
+      ]
+    },
+    quiz: [
+      {q: "What is a cycle?", opts: ["Something that happens once", "Something that repeats over and over", "Something that never happens", "Something random"], correct: 1},
+      {q: "What comes after night in the daily cycle?", opts: ["Afternoon", "Morning", "Evening", "Winter"], correct: 1},
+      {q: "What season comes after fall?", opts: ["Spring", "Summer", "Winter", "Fall again"], correct: 2},
+      {q: "How many seasons are in the seasonal cycle?", opts: ["Two", "Three", "Four", "Five"], correct: 2},
+      {q: "Why are cycles helpful?", opts: ["They make things confusing", "They help us know what to expect", "They make things different", "They don't help at all"], correct: 1}
+    ]
+  },
+  5: {
+    title: "E2.3: Light and Heat from the Sun",
+    learn: `
+      <div class="content-box">
+        <h2>The Sun's Light and Heat Change!</h2>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>The amount of light and heat we get from the Sun changes during the day and through the seasons! Let's explore how!</p>
+      </div>
+      <div class="example-card">
+        <h3>☀️ Changes During the Day</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>The Sun's light and heat change from morning to night:</p>
+        <ul><li>Early Morning - Sun is low, light is gentle, not too hot</li><li>Noon - Sun is high in the sky, brightest and hottest!</li><li>Afternoon - Still bright but Sun is lower</li><li>Evening - Sun sets, less light and heat</li><li>Night - No sunlight, cooler temperatures</li></ul>
+      </div>
+      <div class="example-card">
+        <h3>🌡️ Temperature Changes</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>We can feel how the Sun's heat changes:</p>
+        <ul><li>Morning is usually cool</li><li>Afternoon is the warmest part of the day</li><li>Evening starts to cool down</li><li>Night is the coolest time</li></ul>
+      </div>
+      <div class="content-box">
+        <h2>🍂 Seasonal Changes in Light and Heat</h2>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>Different seasons give us different amounts of sunlight and warmth!</p>
+      </div>
+      <div class="example-card">
+        <h3>☀️ Summer</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <ul><li>Longest days - lots of sunlight!</li><li>Sun is very strong and bright</li><li>Most heat - it's hot outside!</li><li>Sun stays in the sky longer</li></ul>
+      </div>
+      <div class="example-card">
+        <h3>❄️ Winter</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <ul><li>Shortest days - less sunlight</li><li>Sun is lower in the sky</li><li>Least heat - it's cold outside!</li><li>It gets dark early</li></ul>
+      </div>
+    `,
+    activity: {
+      title: "Most or Least Light and Heat?",
+      instruction: "Drag each item to show if it has the MOST or LEAST light and heat!",
+      items: [
+        {text: "Summer Days", answer: "most"},
+        {text: "Winter Days", answer: "least"},
+        {text: "Noon", answer: "most"},
+        {text: "Night", answer: "least"},
+        {text: "Sunny Afternoon", answer: "most"},
+        {text: "Early Morning", answer: "least"},
+        {text: "Longest Day of Year", answer: "most"},
+        {text: "Shortest Day of Year", answer: "least"}
+      ],
+      zones: [
+        {id: "most", label: "☀️ MOST Light & Heat"},
+        {id: "least", label: "🌙 LEAST Light & Heat"}
+      ]
+    },
+    quiz: [
+      {q: "When is the Sun brightest and hottest during the day?", opts: ["Early morning", "Noon (midday)", "Evening", "Night"], correct: 1},
+      {q: "Which season has the MOST sunlight and heat?", opts: ["Winter", "Fall", "Summer", "Spring"], correct: 2},
+      {q: "Which season has the LEAST sunlight?", opts: ["Winter", "Summer", "Fall", "Spring"], correct: 0},
+      {q: "When does it usually feel coolest during the day?", opts: ["Noon", "Afternoon", "Night and early morning", "It's always the same"], correct: 2},
+      {q: "In summer, why can we play outside later?", opts: ["It's colder", "There's more daylight", "It gets dark earlier", "There's less sunlight"], correct: 1}
+    ]
+  },
+  6: {
+    title: "E2.4: Describing the Four Seasons",
+    learn: `
+      <div class="content-box">
+        <h2>Weather in the Four Seasons</h2>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>Each season has different weather! Let's learn about the temperature, precipitation (rain, snow, etc.), and what the weather is like in each season!</p>
+      </div>
+      <div class="example-card">
+        <h3>☀️ Summer Weather</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p><strong>Temperature:</strong> Hot and warm!</p>
+        <p><strong>Precipitation:</strong> Rain showers and thunderstorms</p>
+        <ul><li>Sunny and bright days</li><li>Sometimes very hot and humid</li><li>Warm rain in the afternoon</li><li>Perfect for swimming!</li></ul>
+      </div>
+      <div class="example-card">
+        <h3>🍂 Fall (Autumn) Weather</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p><strong>Temperature:</strong> Cool and getting colder</p>
+        <p><strong>Precipitation:</strong> Rain and wind</p>
+        <ul><li>Crisp, cool air</li><li>Cloudy and rainy days</li><li>Sometimes foggy in the morning</li><li>Need a jacket outside!</li></ul>
+      </div>
+      <div class="example-card">
+        <h3>❄️ Winter Weather</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p><strong>Temperature:</strong> Cold and freezing!</p>
+        <p><strong>Precipitation:</strong> Snow, ice, and sleet</p>
+        <ul><li>Very cold temperatures</li><li>Snow covering the ground</li><li>Ice on ponds and sidewalks</li><li>Need warm coats, hats, and mittens!</li></ul>
+      </div>
+      <div class="example-card">
+        <h3>🌸 Spring Weather</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p><strong>Temperature:</strong> Mild and getting warmer</p>
+        <p><strong>Precipitation:</strong> Lots of rain showers</p>
+        <ul><li>Temperature warms up slowly</li><li>Rainy days help flowers grow</li><li>Sometimes still chilly in the morning</li><li>Rainbow weather - sun and rain!</li></ul>
+      </div>
+    `,
+    activity: {
+      title: "Match Weather to Seasons!",
+      instruction: "Drag each type of weather to the right season!",
+      items: [
+        {text: "Hot and Sunny", answer: "summer"},
+        {text: "Snow and Ice", answer: "winter"},
+        {text: "Cool and Windy", answer: "fall"},
+        {text: "Rainy and Mild", answer: "spring"},
+        {text: "Thunderstorms", answer: "summer"},
+        {text: "Freezing Cold", answer: "winter"},
+        {text: "Leaves Falling", answer: "fall"},
+        {text: "Flowers Blooming", answer: "spring"}
+      ],
+      zones: [
+        {id: "summer", label: "☀️ Summer"},
+        {id: "fall", label: "🍂 Fall"},
+        {id: "winter", label: "❄️ Winter"},
+        {id: "spring", label: "🌸 Spring"}
+      ]
+    },
+    quiz: [
+      {q: "Which season is the HOTTEST?", opts: ["Winter", "Summer", "Fall", "Spring"], correct: 1},
+      {q: "When do we usually see snow?", opts: ["Winter", "Summer", "Fall", "Spring"], correct: 0},
+      {q: "Which season has the most rain showers to help flowers grow?", opts: ["Winter", "Summer", "Fall", "Spring"], correct: 3},
+      {q: "What kind of weather do we see in fall?", opts: ["Hot and sunny", "Cool and windy", "Freezing and snowy", "Very rainy"], correct: 1},
+      {q: "Which season is the COLDEST?", opts: ["Winter", "Summer", "Fall", "Spring"], correct: 0}
+    ]
+  },
+  7: {
+    title: "E2.5: How Living Things Adapt to Seasons",
+    learn: `
+      <div class="content-box">
+        <h2>Living Things Change with the Seasons!</h2>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>Animals and plants are very smart! They change how they look and act to survive in different seasons. These changes are called adaptations!</p>
+      </div>
+      <div class="example-card">
+        <h3>🐻 Animal Adaptations</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>Animals do amazing things to survive the seasons!</p>
+        <ul><li>Bears eat lots of food in fall, then hibernate (sleep) all winter in caves</li><li>Birds fly south (migrate) to warmer places for winter</li><li>Rabbits grow thicker, white fur in winter for warmth and camouflage</li><li>Squirrels gather and hide nuts in fall to eat during winter</li><li>Frogs bury themselves in mud and sleep through winter</li></ul>
+      </div>
+      <div class="example-card">
+        <h3>🦌 Appearance Changes</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>Some animals look different in different seasons:</p>
+        <ul><li>Arctic foxes have brown fur in summer and white fur in winter</li><li>Deer grow thick coats for winter and shed them in spring</li><li>Some insects change color to match the season</li><li>Ducks grow special feathers for different seasons</li></ul>
+      </div>
+      <div class="example-card">
+        <h3>🌺 Plant Adaptations</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>Plants also change with the seasons!</p>
+        <ul><li>Trees lose their leaves in fall to save energy for winter</li><li>Flowers bloom in spring when it's warm and sunny</li><li>Seeds wait under the ground during winter, protected by snow</li><li>Evergreen trees keep their needles all year long</li><li>Some plants grow fruit in summer and fall</li></ul>
+      </div>
+      <div class="content-box">
+        <h2>Why Do Living Things Adapt?</h2>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>Living things adapt to survive! These changes help them find food, stay warm or cool, and stay safe through all the seasons!</p>
+      </div>
+    `,
+    activity: {
+      title: "Match the Adaptation!",
+      instruction: "Is this an animal adaptation or a plant adaptation?",
+      items: [
+        {text: "Bears Hibernate", answer: "animal"},
+        {text: "Trees Lose Leaves", answer: "plant"},
+        {text: "Birds Fly South", answer: "animal"},
+        {text: "Flowers Bloom in Spring", answer: "plant"},
+        {text: "Rabbits Grow Thick Fur", answer: "animal"},
+        {text: "Seeds Wait Underground", answer: "plant"},
+        {text: "Squirrels Gather Nuts", answer: "animal"},
+        {text: "Evergreens Keep Needles", answer: "plant"}
+      ],
+      zones: [
+        {id: "animal", label: "🐻 Animal Adaptations"},
+        {id: "plant", label: "🌺 Plant Adaptations"}
+      ]
+    },
+    quiz: [
+      {q: "What do we call it when animals and plants change to survive the seasons?", opts: ["Hibernation", "Adaptation", "Migration", "Transformation"], correct: 1},
+      {q: "What do bears do all winter?", opts: ["Play in the snow", "Hibernate in caves", "Fly south", "Swim"], correct: 1},
+      {q: "Why do trees lose their leaves in fall?", opts: ["They are dying", "To save energy for winter", "They don't like fall", "It's too cold"], correct: 1},
+      {q: "What do birds do when winter comes?", opts: ["Hibernate", "Fly south (migrate)", "Change color", "Sleep more"], correct: 1},
+      {q: "When do flowers bloom?", opts: ["Winter", "Summer only", "Spring and summer", "Fall"], correct: 2}
+    ]
+  },
+  8: {
+    title: "E2.6: How Humans Respond to Changes",
+    learn: `
+      <div class="content-box">
+        <h2>How We Prepare for Daily and Seasonal Changes!</h2>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>Just like animals and plants, humans adapt to daily and seasonal changes! We change what we wear, what we do, and how we prepare for different weather!</p>
+      </div>
+      <div class="example-card">
+        <h3>👕 Clothing Changes</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>We wear different clothes for different seasons:</p>
+        <ul><li>Summer: T-shirts, shorts, sandals, sunglasses, and hats</li><li>Fall: Long pants, light jackets, and sweaters</li><li>Winter: Heavy coats, snow pants, boots, mittens, hats, and scarves</li><li>Spring: Light jackets, rain boots, and umbrellas</li></ul>
+      </div>
+      <div class="example-card">
+        <h3>🏠 Home Preparations</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>We prepare our homes for different seasons:</p>
+        <ul><li>Turn on heaters in winter to stay warm</li><li>Use air conditioning in summer to stay cool</li><li>Rake leaves in fall to keep yards clean</li><li>Shovel snow from driveways in winter</li><li>Plant gardens in spring</li></ul>
+      </div>
+      <div class="example-card">
+        <h3>🍎 Food Changes</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>The food we eat changes with seasons:</p>
+        <ul><li>Summer: Fresh fruits, ice cream, cold drinks, and barbecues</li><li>Fall: Apples, pumpkins, and warm soups</li><li>Winter: Hot chocolate, stews, and comfort foods</li><li>Spring: Fresh vegetables from gardens</li></ul>
+      </div>
+      <div class="example-card">
+        <h3>⏰ Daily Changes</h3>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>We also respond to daily changes from day to night:</p>
+        <ul><li>We wake up when the sun rises in the morning</li><li>We work and play during the daytime</li><li>We turn on lights when it gets dark</li><li>We go to sleep at night when it's dark</li><li>We dress warmer in the cool morning and lighter at warm noon</li></ul>
+      </div>
+      <div class="content-box">
+        <h2>🚗 Community Preparations</h2>
+        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+        <p>Our communities prepare for seasonal changes too! Cities put salt on roads in winter, plant flowers in spring, water parks open in summer, and farmers harvest crops in fall!</p>
+      </div>
+    `,
+    activity: {
+      title: "When Do We Do This?",
+      instruction: "Match each human response to the right season!",
+      items: [
+        {text: "Wear Heavy Coats", answer: "winter"},
+        {text: "Go Swimming", answer: "summer"},
+        {text: "Rake Leaves", answer: "fall"},
+        {text: "Plant Gardens", answer: "spring"},
+        {text: "Shovel Snow", answer: "winter"},
+        {text: "Eat Ice Cream", answer: "summer"},
+        {text: "Pick Pumpkins", answer: "fall"},
+        {text: "Use Umbrellas Often", answer: "spring"}
+      ],
+      zones: [
+        {id: "summer", label: "☀️ Summer"},
+        {id: "fall", label: "🍂 Fall"},
+        {id: "winter", label: "❄️ Winter"},
+        {id: "spring", label: "🌸 Spring"}
+      ]
+    },
+    quiz: [
+      {q: "What do we wear in winter to stay warm?", opts: ["T-shirts and shorts", "Heavy coats and mittens", "Swimsuits", "Sandals"], correct: 1},
+      {q: "When do we usually turn on the heater in our homes?", opts: ["Summer", "Winter", "Spring", "All year"], correct: 1},
+      {q: "What do people do in fall to prepare their yards?", opts: ["Plant gardens", "Shovel snow", "Rake leaves", "Water flowers"], correct: 2},
+      {q: "Why do we turn on lights at night?", opts: ["For fun", "Because it gets dark", "To waste energy", "It's a rule"], correct: 1},
+      {q: "What do we enjoy eating more in hot summer weather?", opts: ["Hot soup", "Ice cream and cold drinks", "Heavy stews", "Hot chocolate"], correct: 1}
+    ]
+  }
+};
+
+let currentUnit = 1;
+let draggedElement = null;
+
+function showUnit(unitNum) {
+  currentUnit = unitNum;
+  document.querySelectorAll('.unit-btn').forEach((btn, idx) => {
+    btn.classList.toggle('active', idx === unitNum - 1);
+  });
+  renderUnit(unitNum);
+}
+
+function renderUnit(unitNum) {
+  const data = unitsData[unitNum];
+  const container = document.getElementById('units-container');
+  
+  container.innerHTML = `
+    <div style="text-align: center;">
+      <div class="unit-badge">${data.title}</div>
+    </div>
+    <div class="nav-buttons">
+      <button class="nav-btn active" onclick="showSection('learn', ${unitNum})">📚 Learn</button>
+      <button class="nav-btn" onclick="showSection('activity', ${unitNum})">🎯 Activity</button>
+      <button class="nav-btn" onclick="showSection('quiz', ${unitNum})">✏️ Quiz</button>
+    </div>
+    <div class="content-section active" id="section-learn">${data.learn}</div>
+    <div class="content-section" id="section-activity">${renderActivity(data.activity, unitNum)}</div>
+    <div class="content-section" id="section-quiz">${renderQuiz(data.quiz, unitNum)}</div>
+  `;
+  
+  setupDragDrop();
+}
+
+function showSection(section, unitNum) {
+  document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('section-' + section).classList.add('active');
+}
+
+function renderActivity(activity, unitNum) {
+  return `
+    <div class="activity-container">
+      <h2>🎯 ${activity.title}</h2>
+      <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+      <p style="text-align: center; font-size: 1.2em; margin-bottom: 20px;">${activity.instruction}</p>
+      <div class="drag-drop-area">
+        <div class="items-box">
+          <h3>Items</h3>
+          <div id="items-container-${unitNum}">
+            ${activity.items.map((item, idx) => `<div class="draggable-item" draggable="true" data-answer="${item.answer}">${item.text}</div>`).join('')}
+          </div>
+        </div>
+        <div class="drop-zones">
+          ${activity.zones.map(zone => `<div class="drop-zone" data-zone="${zone.id}"><h4>${zone.label}</h4></div>`).join('')}
+        </div>
+      </div>
+      <button class="check-button" onclick="checkActivity(${unitNum})">Check My Answers!</button>
+      <button class="reset-button" onclick="resetActivity(${unitNum})">Start Over</button>
+      <div class="feedback" id="feedback-${unitNum}"></div>
+    </div>
+  `;
+}
+
+function renderQuiz(questions, unitNum) {
+  return `
+    <div class="quiz-container">
+      <h2>✏️ Test Your Knowledge!</h2>
+      <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+      ${questions.map((q, idx) => `
+        <div class="quiz-question" data-unit="${unitNum}" data-q="${idx}">
+          <h3>Question ${idx + 1}:</h3>
+          <div class="read-text" onclick="readText(this)">Click to read aloud</div>
+          <p>${q.q}</p>
+          <div class="quiz-options">
+            ${q.opts.map((opt, oidx) => `<div class="quiz-option" data-correct="${oidx === q.correct}" onclick="selectQuizOption(this)">${opt}</div>`).join('')}
+          </div>
+        </div>
+      `).join('')}
+      <button class="submit-quiz-button" onclick="submitQuiz(${unitNum})">Submit Quiz</button>
+      <div class="quiz-score" id="quiz-score-${unitNum}"></div>
+    </div>
+  `;
+}
+
+function setupDragDrop() {
+  document.querySelectorAll('.draggable-item').forEach(item => {
+    item.addEventListener('dragstart', function(e) {
+      draggedElement = this;
+      this.classList.add('dragging');
+    });
+    item.addEventListener('dragend', function() {
+      this.classList.remove('dragging');
+    });
+  });
+
+  document.querySelectorAll('.drop-zone').forEach(zone => {
+    zone.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      this.classList.add('drag-over');
+    });
+    zone.addEventListener('dragleave', function() {
+      this.classList.remove('drag-over');
+    });
+    zone.addEventListener('drop', function(e) {
+      e.preventDefault();
+      this.classList.remove('drag-over');
+      if (draggedElement) this.appendChild(draggedElement);
+    });
+  });
+}
+
+function checkActivity(unitNum) {
+  let correct = 0, total = 0;
+  document.querySelectorAll('.drop-zone').forEach(zone => {
+    const zoneId = zone.dataset.zone;
+    zone.querySelectorAll('.draggable-item').forEach(item => {
+      total++;
+      if (item.dataset.answer === zoneId) {
+        correct++;
+        item.style.background = 'linear-gradient(135deg, #4caf50 0%, #45a049 100%)';
+      } else {
+        item.style.background = 'linear-gradient(135deg, #f44336 0%, #da190b 100%)';
+      }
+    });
+  });
+  
+  const feedback = document.getElementById('feedback-' + unitNum);
+  if (correct === total) {
+    feedback.className = 'feedback correct';
+    feedback.textContent = '🎉 Perfect! You matched all items correctly!';
+  } else {
+    feedback.className = 'feedback incorrect';
+    feedback.textContent = `You got ${correct} out of ${total} correct. Try again!`;
+  }
+}
+
+function resetActivity(unitNum) {
+  const container = document.getElementById('items-container-' + unitNum);
+  document.querySelectorAll('.draggable-item').forEach(item => {
+    item.style.background = 'linear-gradient(135deg, #ff8c42 0%, #ff6b35 100%)';
+    container.appendChild(item);
+  });
+  document.getElementById('feedback-' + unitNum).style.display = 'none';
+}
+
+function selectQuizOption(element) {
+  const question = element.closest('.quiz-question');
+  question.querySelectorAll('.quiz-option').forEach(opt => opt.classList.remove('selected'));
+  element.classList.add('selected');
+}
+
+function submitQuiz(unitNum) {
+  let correct = 0, total = 0;
+  document.querySelectorAll(`.quiz-question[data-unit="${unitNum}"]`).forEach(q => {
+    const selected = q.querySelector('.quiz-option.selected');
+    const correctOpt = q.querySelector('.quiz-option[data-correct="true"]');
+    total++;
+    if (selected) {
+      if (selected.dataset.correct === 'true') {
+        selected.classList.add('correct');
+        correct++;
+      } else {
+        selected.classList.add('incorrect');
+        correctOpt.classList.add('correct');
+      }
+    } else {
+      correctOpt.classList.add('correct');
+    }
+  });
+  
+  const scoreDiv = document.getElementById('quiz-score-' + unitNum);
+  const percentage = Math.round((correct / total) * 100);
+  scoreDiv.style.display = 'block';
+  
+  if (percentage === 100) {
+    scoreDiv.innerHTML = `🌟 Perfect Score! ${correct}/${total} correct! 🌟`;
+    scoreDiv.style.background = '#d4edda';
+    scoreDiv.style.color = '#155724';
+  } else if (percentage >= 60) {
+    scoreDiv.innerHTML = `👍 Good job! You got ${correct}/${total} correct! (${percentage}%)`;
+    scoreDiv.style.background = '#fff3cd';
+    scoreDiv.style.color = '#856404';
+  } else {
+    scoreDiv.innerHTML = `Keep learning! You got ${correct}/${total} correct. (${percentage}%) Try again!`;
+    scoreDiv.style.background = '#f8d7da';
+    scoreDiv.style.color = '#721c24';
+  }
+}
+
+function readText(element) {
+  const container = element.parentElement;
+  let text = '';
+  Array.from(container.children).forEach(child => {
+    if (!child.classList.contains('read-text')) text += child.textContent + ' ';
+  });
+  const directText = Array.from(container.childNodes)
+    .filter(node => node.nodeType === 3)
+    .map(node => node.textContent.trim())
+    .join(' ');
+  text = (text + ' ' + directText).trim();
+  
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 0.9;
+    utterance.pitch = 1.1;
+    window.speechSynthesis.speak(utterance);
+    element.style.background = '#ff8c42';
+    element.style.color = 'white';
+    utterance.onend = function() {
+      element.style.background = '#fff4e6';
+      element.style.color = 'inherit';
+    };
+  } else {
+    alert('Sorry, your browser does not support text-to-speech!');
+  }
+}
+
+window.onload = function() {
+  showUnit(1);
+};
+</script>
+</body>
+</html>
