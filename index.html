@@ -37,8 +37,117 @@ body { font-family: 'Comic Sans MS', Arial, sans-serif; background: linear-gradi
 .example-card h3 { color: #ff6b35; margin-bottom: 10px; font-size: 1.4em; }
 .example-card p { line-height: 1.6; font-size: 1.1em; margin-bottom: 10px; }
 .example-card ul { list-style: none; padding-left: 0; }
-.example-card li { padding: 8px 0; padding-left: 30px; position: relative; font-size: 1.1em; }
-.example-card li::before { content: "🏗️"; position: absolute; left: 0; }
+.example-card li { padding: 8px 0; padding-left: 25px; position: relative; font-size: 1.1em; }
+.example-card li::before { content: "▸"; position: absolute; left: 0; color: #ff8c42; font-size: 1.2em; font-weight: bold; }
+
+.illustration-box {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  border: 4px solid #4a90e2;
+  border-radius: 15px;
+  padding: 30px;
+  margin: 20px 0;
+  text-align: center;
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.season-illustration {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.season-card {
+  background: white;
+  border: 3px solid #ff8c42;
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+}
+
+.season-icon {
+  font-size: 4em;
+  margin: 10px 0;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.big-icon {
+  font-size: 8em;
+  margin: 20px 0;
+  text-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.cycle-diagram {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+
+.cycle-item {
+  background: white;
+  border: 3px solid #4a90e2;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5em;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.cycle-arrow {
+  font-size: 2em;
+  color: #ff8c42;
+}
+
+.earth-sun-diagram {
+  position: relative;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sun {
+  font-size: 6em;
+  position: absolute;
+  right: 50px;
+  animation: glow 2s ease-in-out infinite;
+}
+
+.earth {
+  font-size: 4em;
+  position: absolute;
+  left: 50px;
+  animation: rotate 4s linear infinite;
+}
+
+@keyframes glow {
+  0%, 100% { text-shadow: 0 0 20px #ff8c42; }
+  50% { text-shadow: 0 0 40px #ff6b35; }
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 .activity-container { background: #f0f8ff; border: 4px solid #4a90e2; border-radius: 15px; padding: 30px; margin: 20px 0; }
 .activity-container h2 { color: #2c5aa0; text-align: center; margin-bottom: 25px; font-size: 2em; }
 .drag-drop-area { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px; }
@@ -71,7 +180,7 @@ body { font-family: 'Comic Sans MS', Arial, sans-serif; background: linear-gradi
 .submit-quiz-button { background: #4caf50; color: white; border: none; padding: 15px 40px; font-size: 1.3em; border-radius: 30px; cursor: pointer; display: block; margin: 30px auto; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.2); transition: all 0.3s; }
 .submit-quiz-button:hover { background: #45a049; transform: translateY(-2px); }
 .quiz-score { text-align: center; font-size: 2em; font-weight: bold; color: #8b5a3c; margin: 20px 0; padding: 20px; background: #fff9f0; border-radius: 15px; display: none; }
-@media (max-width: 768px) { .drag-drop-area { grid-template-columns: 1fr; } .header h1 { font-size: 1.8em; } .content-section { padding: 20px; } .unit-buttons { grid-template-columns: 1fr; } }
+@media (max-width: 768px) { .drag-drop-area { grid-template-columns: 1fr; } .header h1 { font-size: 1.8em; } .content-section { padding: 20px; } .unit-buttons { grid-template-columns: 1fr; } .season-illustration { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -108,6 +217,34 @@ const unitsData = {
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
         <p>Every day and every season is different! The weather changes, and this affects what we can do outside. Let's learn how people enjoy outdoor activities all year long!</p>
       </div>
+      
+      <div class="season-illustration">
+        <div class="season-card">
+          <div class="season-icon">☀️</div>
+          <h3 style="color: #ff8c42;">Summer</h3>
+          <p style="font-size: 3em; margin: 10px 0;">🏊 🏖️ ⚽</p>
+          <p>Swimming, Beach, Sports</p>
+        </div>
+        <div class="season-card">
+          <div class="season-icon">🍂</div>
+          <h3 style="color: #ff6b35;">Fall</h3>
+          <p style="font-size: 3em; margin: 10px 0;">🍎 🎃 🍁</p>
+          <p>Apples, Pumpkins, Leaves</p>
+        </div>
+        <div class="season-card">
+          <div class="season-icon">❄️</div>
+          <h3 style="color: #4a90e2;">Winter</h3>
+          <p style="font-size: 3em; margin: 10px 0;">⛷️ ⛸️ ⛄</p>
+          <p>Skiing, Skating, Snowmen</p>
+        </div>
+        <div class="season-card">
+          <div class="season-icon">🌸</div>
+          <h3 style="color: #4caf50;">Spring</h3>
+          <p style="font-size: 3em; margin: 10px 0;">🌷 🪁 🌱</p>
+          <p>Flowers, Kites, Planting</p>
+        </div>
+      </div>
+
       <div class="example-card">
         <h3>🌞 Summer Activities</h3>
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
@@ -137,6 +274,13 @@ const unitsData = {
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
         <p>People have created special things to help us enjoy outdoor activities in any season!</p>
       </div>
+      
+      <div class="illustration-box">
+        <h3 style="color: #2c5aa0; margin-bottom: 20px;">Year-Round Fun!</h3>
+        <div style="font-size: 5em; margin: 20px 0;">🏊 + ❄️ = 🏢🏊</div>
+        <p style="font-size: 1.2em;">Indoor pools let us swim even in winter!</p>
+      </div>
+      
       <div class="example-card">
         <h3>Smart Clothing</h3>
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
@@ -184,6 +328,16 @@ const unitsData = {
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
         <p>Daily and seasonal changes don't just affect us - they affect our whole community, the environment, and all living things! Let's explore how!</p>
       </div>
+      
+      <div class="illustration-box">
+        <h3 style="color: #2c5aa0; margin-bottom: 20px;">Three Big Impacts</h3>
+        <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px; font-size: 4em;">
+          <div style="text-align: center;"><div>🏘️</div><p style="font-size: 0.3em;">Society</p></div>
+          <div style="text-align: center;"><div>🌍</div><p style="font-size: 0.3em;">Environment</p></div>
+          <div style="text-align: center;"><div>🦋</div><p style="font-size: 0.3em;">Living Things</p></div>
+        </div>
+      </div>
+      
       <div class="example-card">
         <h3>🏘️ Impact on Society</h3>
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
@@ -206,6 +360,11 @@ const unitsData = {
         <h2>🌡️ Daily Changes Matter Too!</h2>
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
         <p>Even day to night affects our world! During the day, the sun warms us and plants make food. At night, it gets cooler and many animals come out to hunt or play!</p>
+      </div>
+      
+      <div class="illustration-box">
+        <div class="big-icon">☀️ → 🌙</div>
+        <p style="font-size: 1.2em;">Day and night bring different changes!</p>
       </div>
     `,
     activity: {
@@ -243,6 +402,16 @@ const unitsData = {
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
         <p>The Earth and Sun have a special relationship! The Earth moves around the Sun, and this movement creates day and night, and the four seasons. Let's learn how!</p>
       </div>
+      
+      <div class="illustration-box">
+        <h3 style="color: #2c5aa0; margin-bottom: 20px;">Day and Night</h3>
+        <div class="earth-sun-diagram">
+          <div class="earth">🌍</div>
+          <div class="sun">☀️</div>
+        </div>
+        <p style="font-size: 1.2em; margin-top: 20px;">Earth spins like a top!</p>
+      </div>
+      
       <div class="example-card">
         <h3>☀️ Day and Night</h3>
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
@@ -254,6 +423,20 @@ const unitsData = {
         <p>It takes one full day (24 hours) for Earth to spin around once. This is why we have day and night every single day!</p>
         <ul><li>Morning: Sun rises in the east</li><li>Noon: Sun is high in the sky</li><li>Evening: Sun sets in the west</li><li>Night: We see the moon and stars</li></ul>
       </div>
+      
+      <div class="illustration-box">
+        <div class="cycle-diagram">
+          <div class="cycle-item">🌅</div>
+          <div class="cycle-arrow">→</div>
+          <div class="cycle-item">☀️</div>
+          <div class="cycle-arrow">→</div>
+          <div class="cycle-item">🌆</div>
+          <div class="cycle-arrow">→</div>
+          <div class="cycle-item">🌙</div>
+        </div>
+        <p style="font-size: 1.2em;">The Daily Cycle!</p>
+      </div>
+      
       <div class="example-card">
         <h3>🌍 The Earth Travels Around the Sun</h3>
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
@@ -299,18 +482,53 @@ const unitsData = {
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
         <p>A cycle is something that happens over and over again in the same order! Like riding a bicycle in circles, cycles repeat themselves. We can see cycles in nature every day!</p>
       </div>
+      
+      <div class="illustration-box">
+        <div class="big-icon">🔄</div>
+        <h3 style="color: #2c5aa0;">Cycles Repeat!</h3>
+        <p style="font-size: 1.2em;">Round and round they go!</p>
+      </div>
+      
       <div class="example-card">
         <h3>🔄 The Daily Cycle</h3>
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
         <p>Every day follows the same pattern:</p>
         <ul><li>Morning - The sun rises and it gets light</li><li>Afternoon - The sun is high and bright</li><li>Evening - The sun sets and it gets dark</li><li>Night - We see stars and the moon</li><li>Then morning comes again!</li></ul>
       </div>
+      
+      <div class="illustration-box">
+        <div class="cycle-diagram">
+          <div class="cycle-item" style="background: #fff9e6;">🌅</div>
+          <div class="cycle-arrow">→</div>
+          <div class="cycle-item" style="background: #ffe8cc;">☀️</div>
+          <div class="cycle-arrow">→</div>
+          <div class="cycle-item" style="background: #ffd4a3;">🌆</div>
+          <div class="cycle-arrow">→</div>
+          <div class="cycle-item" style="background: #1a1a2e; color: white;">🌙</div>
+          <div class="cycle-arrow">↻</div>
+        </div>
+      </div>
+      
       <div class="example-card">
         <h3>🍂 The Seasonal Cycle</h3>
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
         <p>The four seasons repeat every year in order:</p>
         <ul><li>Winter - Cold and snowy</li><li>Spring - Warm and flowers bloom</li><li>Summer - Hot and sunny</li><li>Fall - Cool and leaves change colors</li><li>Then winter comes again!</li></ul>
       </div>
+      
+      <div class="illustration-box">
+        <div class="cycle-diagram">
+          <div class="cycle-item" style="background: #e3f2fd;">❄️</div>
+          <div class="cycle-arrow">→</div>
+          <div class="cycle-item" style="background: #e8f5e9;">🌸</div>
+          <div class="cycle-arrow">→</div>
+          <div class="cycle-item" style="background: #fff9e6;">☀️</div>
+          <div class="cycle-arrow">→</div>
+          <div class="cycle-item" style="background: #ffe8cc;">🍂</div>
+          <div class="cycle-arrow">↻</div>
+        </div>
+      </div>
+      
       <div class="content-box">
         <h2>Other Cycles We See</h2>
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
@@ -362,32 +580,68 @@ const unitsData = {
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
         <p>The amount of light and heat we get from the Sun changes during the day and through the seasons! Let's explore how!</p>
       </div>
+      
+      <div class="illustration-box">
+        <div class="big-icon sun">☀️</div>
+        <p style="font-size: 1.3em;">The Sun gives us light AND heat!</p>
+      </div>
+      
       <div class="example-card">
         <h3>☀️ Changes During the Day</h3>
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
         <p>The Sun's light and heat change from morning to night:</p>
         <ul><li>Early Morning - Sun is low, light is gentle, not too hot</li><li>Noon - Sun is high in the sky, brightest and hottest!</li><li>Afternoon - Still bright but Sun is lower</li><li>Evening - Sun sets, less light and heat</li><li>Night - No sunlight, cooler temperatures</li></ul>
       </div>
-      <div class="example-card">
-        <h3>🌡️ Temperature Changes</h3>
-        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
-        <p>We can feel how the Sun's heat changes:</p>
-        <ul><li>Morning is usually cool</li><li>Afternoon is the warmest part of the day</li><li>Evening starts to cool down</li><li>Night is the coolest time</li></ul>
+      
+      <div class="illustration-box">
+        <h3 style="color: #2c5aa0; margin-bottom: 20px;">Daily Temperature Changes</h3>
+        <div style="display: flex; justify-content: space-around; align-items: flex-end; height: 150px; gap: 10px;">
+          <div style="text-align: center;">
+            <div style="background: #ffeb3b; height: 60px; width: 60px; border-radius: 10px;"></div>
+            <p style="margin-top: 10px;">Morning<br>😊 Cool</p>
+          </div>
+          <div style="text-align: center;">
+            <div style="background: #ff9800; height: 120px; width: 60px; border-radius: 10px;"></div>
+            <p style="margin-top: 10px;">Noon<br>🥵 Hot!</p>
+          </div>
+          <div style="text-align: center;">
+            <div style="background: #ff5722; height: 90px; width: 60px; border-radius: 10px;"></div>
+            <p style="margin-top: 10px;">Evening<br>😌 Warm</p>
+          </div>
+          <div style="text-align: center;">
+            <div style="background: #3f51b5; height: 40px; width: 60px; border-radius: 10px;"></div>
+            <p style="margin-top: 10px;">Night<br>🥶 Cool</p>
+          </div>
+        </div>
       </div>
+      
       <div class="content-box">
         <h2>🍂 Seasonal Changes in Light and Heat</h2>
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
         <p>Different seasons give us different amounts of sunlight and warmth!</p>
       </div>
-      <div class="example-card">
-        <h3>☀️ Summer</h3>
-        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
-        <ul><li>Longest days - lots of sunlight!</li><li>Sun is very strong and bright</li><li>Most heat - it's hot outside!</li><li>Sun stays in the sky longer</li></ul>
-      </div>
-      <div class="example-card">
-        <h3>❄️ Winter</h3>
-        <div class="read-text" onclick="readText(this)">Click to read aloud</div>
-        <ul><li>Shortest days - less sunlight</li><li>Sun is lower in the sky</li><li>Least heat - it's cold outside!</li><li>It gets dark early</li></ul>
+      
+      <div class="season-illustration">
+        <div class="season-card">
+          <h3 style="color: #ff8c42;">☀️ Summer</h3>
+          <p style="font-size: 3em;">🌡️⬆️⬆️</p>
+          <ul style="text-align: left;"><li>Longest days</li><li>Most heat</li><li>Very bright</li></ul>
+        </div>
+        <div class="season-card">
+          <h3 style="color: #4a90e2;">❄️ Winter</h3>
+          <p style="font-size: 3em;">🌡️⬇️⬇️</p>
+          <ul style="text-align: left;"><li>Shortest days</li><li>Least heat</li><li>Gets dark early</li></ul>
+        </div>
+        <div class="season-card">
+          <h3 style="color: #4caf50;">🌸 Spring</h3>
+          <p style="font-size: 3em;">🌡️↗️</p>
+          <ul style="text-align: left;"><li>Medium days</li><li>Warming up</li><li>More light</li></ul>
+        </div>
+        <div class="season-card">
+          <h3 style="color: #ff6b35;">🍂 Fall</h3>
+          <p style="font-size: 3em;">🌡️↘️</p>
+          <ul style="text-align: left;"><li>Medium days</li><li>Cooling down</li><li>Less light</li></ul>
+        </div>
       </div>
     `,
     activity: {
@@ -424,11 +678,23 @@ const unitsData = {
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
         <p>Each season has different weather! Let's learn about the temperature, precipitation (rain, snow, etc.), and what the weather is like in each season!</p>
       </div>
+      
+      <div class="illustration-box">
+        <h3 style="color: #2c5aa0; margin-bottom: 20px;">The Four Seasons</h3>
+        <div style="font-size: 5em; display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px;">
+          <div>☀️</div>
+          <div>🍂</div>
+          <div>❄️</div>
+          <div>🌸</div>
+        </div>
+      </div>
+      
       <div class="example-card">
         <h3>☀️ Summer Weather</h3>
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
         <p><strong>Temperature:</strong> Hot and warm!</p>
         <p><strong>Precipitation:</strong> Rain showers and thunderstorms</p>
+        <div style="font-size: 3em; text-align: center; margin: 15px 0;">🌡️⬆️ 🌧️ ⛈️</div>
         <ul><li>Sunny and bright days</li><li>Sometimes very hot and humid</li><li>Warm rain in the afternoon</li><li>Perfect for swimming!</li></ul>
       </div>
       <div class="example-card">
@@ -436,6 +702,7 @@ const unitsData = {
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
         <p><strong>Temperature:</strong> Cool and getting colder</p>
         <p><strong>Precipitation:</strong> Rain and wind</p>
+        <div style="font-size: 3em; text-align: center; margin: 15px 0;">🌡️↔️ 🌧️ 💨</div>
         <ul><li>Crisp, cool air</li><li>Cloudy and rainy days</li><li>Sometimes foggy in the morning</li><li>Need a jacket outside!</li></ul>
       </div>
       <div class="example-card">
@@ -443,6 +710,7 @@ const unitsData = {
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
         <p><strong>Temperature:</strong> Cold and freezing!</p>
         <p><strong>Precipitation:</strong> Snow, ice, and sleet</p>
+        <div style="font-size: 3em; text-align: center; margin: 15px 0;">🌡️⬇️ ❄️ 🧊</div>
         <ul><li>Very cold temperatures</li><li>Snow covering the ground</li><li>Ice on ponds and sidewalks</li><li>Need warm coats, hats, and mittens!</li></ul>
       </div>
       <div class="example-card">
@@ -450,7 +718,30 @@ const unitsData = {
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
         <p><strong>Temperature:</strong> Mild and getting warmer</p>
         <p><strong>Precipitation:</strong> Lots of rain showers</p>
+        <div style="font-size: 3em; text-align: center; margin: 15px 0;">🌡️↗️ 🌧️ 🌈</div>
         <ul><li>Temperature warms up slowly</li><li>Rainy days help flowers grow</li><li>Sometimes still chilly in the morning</li><li>Rainbow weather - sun and rain!</li></ul>
+      </div>
+      
+      <div class="illustration-box">
+        <h3 style="color: #2c5aa0;">Temperature Comparison</h3>
+        <div style="display: flex; justify-content: space-around; align-items: flex-end; height: 180px; margin-top: 20px;">
+          <div style="text-align: center;">
+            <div style="background: linear-gradient(to top, #ff5722, #ff9800); height: 150px; width: 70px; border-radius: 10px;"></div>
+            <p style="margin-top: 10px;">☀️ Summer<br><strong>Hottest!</strong></p>
+          </div>
+          <div style="text-align: center;">
+            <div style="background: linear-gradient(to top, #ff9800, #ffeb3b); height: 100px; width: 70px; border-radius: 10px;"></div>
+            <p style="margin-top: 10px;">🍂 Fall<br><strong>Cool</strong></p>
+          </div>
+          <div style="text-align: center;">
+            <div style="background: linear-gradient(to top, #3f51b5, #2196f3); height: 50px; width: 70px; border-radius: 10px;"></div>
+            <p style="margin-top: 10px;">❄️ Winter<br><strong>Coldest!</strong></p>
+          </div>
+          <div style="text-align: center;">
+            <div style="background: linear-gradient(to top, #4caf50, #8bc34a); height: 110px; width: 70px; border-radius: 10px;"></div>
+            <p style="margin-top: 10px;">🌸 Spring<br><strong>Mild</strong></p>
+          </div>
+        </div>
       </div>
     `,
     activity: {
@@ -489,24 +780,66 @@ const unitsData = {
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
         <p>Animals and plants are very smart! They change how they look and act to survive in different seasons. These changes are called adaptations!</p>
       </div>
+      
+      <div class="illustration-box">
+        <div class="big-icon">🐻🦌🌺</div>
+        <h3 style="color: #2c5aa0;">Adaptations Help Living Things Survive!</h3>
+      </div>
+      
       <div class="example-card">
         <h3>🐻 Animal Adaptations</h3>
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
         <p>Animals do amazing things to survive the seasons!</p>
         <ul><li>Bears eat lots of food in fall, then hibernate (sleep) all winter in caves</li><li>Birds fly south (migrate) to warmer places for winter</li><li>Rabbits grow thicker, white fur in winter for warmth and camouflage</li><li>Squirrels gather and hide nuts in fall to eat during winter</li><li>Frogs bury themselves in mud and sleep through winter</li></ul>
       </div>
+      
+      <div class="illustration-box">
+        <h3 style="color: #2c5aa0; margin-bottom: 20px;">Migration</h3>
+        <div style="font-size: 4em; display: flex; justify-content: center; align-items: center; gap: 20px;">
+          <div>🦆</div>
+          <div style="font-size: 0.5em;">✈️✈️✈️</div>
+          <div>☀️</div>
+        </div>
+        <p style="font-size: 1.2em; margin-top: 20px;">Birds fly south for winter!</p>
+      </div>
+      
       <div class="example-card">
         <h3>🦌 Appearance Changes</h3>
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
         <p>Some animals look different in different seasons:</p>
         <ul><li>Arctic foxes have brown fur in summer and white fur in winter</li><li>Deer grow thick coats for winter and shed them in spring</li><li>Some insects change color to match the season</li><li>Ducks grow special feathers for different seasons</li></ul>
       </div>
+      
       <div class="example-card">
         <h3>🌺 Plant Adaptations</h3>
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
         <p>Plants also change with the seasons!</p>
         <ul><li>Trees lose their leaves in fall to save energy for winter</li><li>Flowers bloom in spring when it's warm and sunny</li><li>Seeds wait under the ground during winter, protected by snow</li><li>Evergreen trees keep their needles all year long</li><li>Some plants grow fruit in summer and fall</li></ul>
       </div>
+      
+      <div class="season-illustration">
+        <div class="season-card">
+          <h3 style="color: #4caf50;">🌸 Spring</h3>
+          <p style="font-size: 3em;">🌱→🌷</p>
+          <p>Plants grow!</p>
+        </div>
+        <div class="season-card">
+          <h3 style="color: #ff8c42;">☀️ Summer</h3>
+          <p style="font-size: 3em;">🌳🍎</p>
+          <p>Full of life!</p>
+        </div>
+        <div class="season-card">
+          <h3 style="color: #ff6b35;">🍂 Fall</h3>
+          <p style="font-size: 3em;">🍁🍁🍁</p>
+          <p>Leaves fall!</p>
+        </div>
+        <div class="season-card">
+          <h3 style="color: #4a90e2;">❄️ Winter</h3>
+          <p style="font-size: 3em;">🌲❄️</p>
+          <p>Rest time!</p>
+        </div>
+      </div>
+      
       <div class="content-box">
         <h2>Why Do Living Things Adapt?</h2>
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
@@ -547,12 +880,47 @@ const unitsData = {
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
         <p>Just like animals and plants, humans adapt to daily and seasonal changes! We change what we wear, what we do, and how we prepare for different weather!</p>
       </div>
+      
+      <div class="illustration-box">
+        <div style="font-size: 4em; display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px;">
+          <div>👕</div>
+          <div>🏠</div>
+          <div>🍎</div>
+          <div>🚗</div>
+        </div>
+        <p style="font-size: 1.2em; margin-top: 20px;">We adapt in many ways!</p>
+      </div>
+      
       <div class="example-card">
         <h3>👕 Clothing Changes</h3>
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
         <p>We wear different clothes for different seasons:</p>
         <ul><li>Summer: T-shirts, shorts, sandals, sunglasses, and hats</li><li>Fall: Long pants, light jackets, and sweaters</li><li>Winter: Heavy coats, snow pants, boots, mittens, hats, and scarves</li><li>Spring: Light jackets, rain boots, and umbrellas</li></ul>
       </div>
+      
+      <div class="season-illustration">
+        <div class="season-card">
+          <h3 style="color: #ff8c42;">☀️ Summer</h3>
+          <p style="font-size: 3em;">👕🩳👒</p>
+          <p>Light clothes!</p>
+        </div>
+        <div class="season-card">
+          <h3 style="color: #ff6b35;">🍂 Fall</h3>
+          <p style="font-size: 3em;">🧥👖</p>
+          <p>Jackets!</p>
+        </div>
+        <div class="season-card">
+          <h3 style="color: #4a90e2;">❄️ Winter</h3>
+          <p style="font-size: 3em;">🧥🧤🧣</p>
+          <p>Warm layers!</p>
+        </div>
+        <div class="season-card">
+          <h3 style="color: #4caf50;">🌸 Spring</h3>
+          <p style="font-size: 3em;">🧥☂️</p>
+          <p>Rain gear!</p>
+        </div>
+      </div>
+      
       <div class="example-card">
         <h3>🏠 Home Preparations</h3>
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
@@ -565,6 +933,21 @@ const unitsData = {
         <p>The food we eat changes with seasons:</p>
         <ul><li>Summer: Fresh fruits, ice cream, cold drinks, and barbecues</li><li>Fall: Apples, pumpkins, and warm soups</li><li>Winter: Hot chocolate, stews, and comfort foods</li><li>Spring: Fresh vegetables from gardens</li></ul>
       </div>
+      
+      <div class="illustration-box">
+        <h3 style="color: #2c5aa0; margin-bottom: 20px;">Daily Changes</h3>
+        <div style="font-size: 4em; display: flex; justify-content: center; align-items: center; gap: 20px;">
+          <div>☀️</div>
+          <div style="font-size: 0.7em;">→</div>
+          <div>😊</div>
+          <div style="font-size: 0.7em;">→</div>
+          <div>🌙</div>
+          <div style="font-size: 0.7em;">→</div>
+          <div>😴</div>
+        </div>
+        <p style="font-size: 1.2em; margin-top: 20px;">We wake, work, and sleep with the sun!</p>
+      </div>
+      
       <div class="example-card">
         <h3>⏰ Daily Changes</h3>
         <div class="read-text" onclick="readText(this)">Click to read aloud</div>
