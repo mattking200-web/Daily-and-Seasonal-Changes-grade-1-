@@ -157,7 +157,7 @@ body { font-family: 'Comic Sans MS', Arial, sans-serif; background: linear-gradi
 .drop-zone { background: white; border: 3px dashed #4a90e2; border-radius: 15px; padding: 20px; min-height: 120px; transition: all 0.3s; }
 .drop-zone h4 { color: #2c5aa0; margin-bottom: 10px; font-size: 1.2em; }
 .drop-zone.drag-over { background: #e3f2fd; border-color: #ff8c42; transform: scale(1.02); }
-.draggable-item { background: linear-gradient(135deg, #ff8c42 0%, #ff6b35 100%); color: white; padding: 15px; margin: 10px 0; border-radius: 10px; cursor: move; font-weight: bold; text-align: center; box-shadow: 0 3px 6px rgba(0,0,0,0.2); transition: all 0.3s; }
+.draggable-item { background: linear-gradient(135deg, #ff8c42 0%, #ff6b35 100%); color: white; padding: 15px; margin: 10px 0; border-radius: 10px; cursor: move; font-weight: bold; text-align: center; box-shadow: 0 3px 6px rgba(0,0,0,0.2); transition: all 0.3s; display: flex; align-items: center; justify-content: center; user-select: none; -webkit-user-select: none; touch-action: none; }
 .draggable-item:hover { transform: translateY(-3px); box-shadow: 0 5px 10px rgba(0,0,0,0.3); }
 .draggable-item.dragging { opacity: 0.5; }
 .check-button { background: #4caf50; color: white; border: none; padding: 15px 40px; font-size: 1.3em; border-radius: 30px; cursor: pointer; display: block; margin: 20px auto; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.2); transition: all 0.3s; }
@@ -1076,6 +1076,7 @@ function renderQuiz(questions, unitNum) {
 
 function setupDragDrop() {
   let touchedElement = null;
+  let originalParent = null;
   
   document.querySelectorAll('.draggable-item').forEach(item => {
     // Desktop drag events
@@ -1089,37 +1090,86 @@ function setupDragDrop() {
     
     // Touch events for iPad/mobile
     item.addEventListener('touchstart', function(e) {
-      e.preventDefault();
       touchedElement = this;
+      originalParent = this.parentElement;
       this.classList.add('dragging');
-      this.style.opacity = '0.5';
+      this.style.opacity = '0.7';
+      this.style.position = 'fixed';
+      this.style.zIndex = '1000';
+      this.style.pointerEvents = 'none';
+      
+      const touch = e.touches[0];
+      const rect = this.getBoundingClientRect();
+      this.dataset.offsetX = touch.clientX - rect.left;
+      this.dataset.offsetY = touch.clientY - rect.top;
     });
     
     item.addEventListener('touchmove', function(e) {
       e.preventDefault();
+      if (!touchedElement) return;
+      
       const touch = e.touches[0];
-      this.style.position = 'fixed';
-      this.style.left = touch.clientX - 100 + 'px';
-      this.style.top = touch.clientY - 25 + 'px';
-      this.style.zIndex = '1000';
+      const offsetX = parseFloat(this.dataset.offsetX) || 0;
+      const offsetY = parseFloat(this.dataset.offsetY) || 0;
+      
+      this.style.left = (touch.clientX - offsetX) + 'px';
+      this.style.top = (touch.clientY - offsetY) + 'px';
+      
+      // Highlight drop zones
+      const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+      document.querySelectorAll('.drop-zone').forEach(zone => {
+        zone.classList.remove('drag-over');
+      });
+      const dropZone = elementBelow?.closest('.drop-zone');
+      if (dropZone) {
+        dropZone.classList.add('drag-over');
+      }
     });
     
     item.addEventListener('touchend', function(e) {
-      e.preventDefault();
+      if (!touchedElement) return;
+      
       this.classList.remove('dragging');
       this.style.opacity = '1';
       this.style.position = 'relative';
       this.style.left = 'auto';
       this.style.top = 'auto';
       this.style.zIndex = 'auto';
+      this.style.pointerEvents = 'auto';
+      delete this.dataset.offsetX;
+      delete this.dataset.offsetY;
       
       const touch = e.changedTouches[0];
-      const dropZone = document.elementFromPoint(touch.clientX, touch.clientY)?.closest('.drop-zone');
+      const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+      const dropZone = elementBelow?.closest('.drop-zone');
       
-      if (dropZone && touchedElement) {
+      if (dropZone) {
         dropZone.appendChild(touchedElement);
+      } else if (originalParent) {
+        originalParent.appendChild(touchedElement);
       }
+      
+      document.querySelectorAll('.drop-zone').forEach(zone => {
+        zone.classList.remove('drag-over');
+      });
+      
       touchedElement = null;
+      originalParent = null;
+    });
+    
+    item.addEventListener('touchcancel', function(e) {
+      if (touchedElement && originalParent) {
+        this.classList.remove('dragging');
+        this.style.opacity = '1';
+        this.style.position = 'relative';
+        this.style.left = 'auto';
+        this.style.top = 'auto';
+        this.style.zIndex = 'auto';
+        this.style.pointerEvents = 'auto';
+        originalParent.appendChild(touchedElement);
+        touchedElement = null;
+        originalParent = null;
+      }
     });
   });
 
@@ -1136,16 +1186,6 @@ function setupDragDrop() {
       e.preventDefault();
       this.classList.remove('drag-over');
       if (draggedElement) this.appendChild(draggedElement);
-    });
-    
-    // Touch events for visual feedback
-    zone.addEventListener('touchstart', function(e) {
-      if (touchedElement) {
-        this.classList.add('drag-over');
-      }
-    });
-    zone.addEventListener('touchend', function() {
-      this.classList.remove('drag-over');
     });
   });
 }
